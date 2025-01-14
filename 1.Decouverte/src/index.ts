@@ -1,8 +1,11 @@
 
 import express from "express";
+import bodyParser from "body-parser";
+
 const app = express();
 const PORT = 3010;
 
+app.use(bodyParser.json());
 
 app.get('/', (request, response) => {
     response.send("Hello world !");
@@ -11,7 +14,7 @@ app.get('/', (request, response) => {
 import ProductController from "./product/product.controller"
 app.use("/api/product", ProductController)
 
-import OrderController from "./order/order.controller"
+import OrderController from "./order/presentation/order.controller"
 app.use("/api/order", OrderController)
 
 app.listen(PORT, () => {
