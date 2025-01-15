@@ -13,7 +13,7 @@ export default class Order {
 
     private customer: number;
 
-    private products: [];
+    private products: Product[];
 
     private status: STATUS;
 
@@ -23,17 +23,17 @@ export default class Order {
 
     private canceledAt: Date;
 
-    constructor(customerId: number, products: []) {
-        if (!customerId) {
-            throw new Error("customerId est nécessaire");
+    constructor(customerId: number, products: Product[]) {
+        if (!customerId || !products) {
+            throw new Error("Les paramètres ne sont pas valides pour créer une commande.");
         }
 
         if (products.length == 0) {
-            throw new Error("Vous devez avoir au moins un produit");
+            throw new Error("Une commande demande au minimum 1 produit pour être acceptée.");
         }
 
         if (products.length > 2) {
-            throw new Error("Vous ne pouvez qu'avoir au maximum 2 produits");
+            throw new Error("Une commande ne peut avoir que 2 produits au maximum.");
         }
         this.createdAt = new Date();
         this.customer = customerId;
@@ -41,7 +41,7 @@ export default class Order {
         this.status = STATUS.CREATED;
 
         this.total = products.reduce((acc, product) => {
-            return acc + 5;
+            return acc + product.getPrice();
         }, 0);
     }
 

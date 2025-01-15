@@ -16,7 +16,6 @@ export default class ProductRepository {
 
     findById(id: number): Product | undefined {
         return this.products.find((product) => product.getId() === id);
-
     }
 
     update(product: Product) {

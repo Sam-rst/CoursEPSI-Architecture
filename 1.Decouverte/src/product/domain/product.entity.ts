@@ -28,4 +28,8 @@ export default class Product {
     public setId(id: number): void {
         this.id = id;
     }
+
+    public getPrice(): number {
+        return this.price;
+    }
 }

@@ -23,18 +23,17 @@ router.get("", (request, response) => {
 
 router.post("", (request, response) => {
     const customerId = request.body.customerId;
-    const products = request.body.products;
+    const listProductsId = request.body.listProductsId;
 
     const createOrderUseCase = new CreateOrderUseCase();
 
     try {
-        const order = createOrderUseCase.createOrder(customerId, products);
+        const order = createOrderUseCase.createOrder(customerId, listProductsId);
         response.status(201).json(order);
     } catch (error: any) {
         response.status(400).json({ error: error.message })
     }
 });
-
 
 router.get("/:orderId", (request, response) => {
     const orderId = parseInt(request.params.orderId);
