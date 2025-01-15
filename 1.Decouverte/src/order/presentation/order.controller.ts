@@ -17,9 +17,9 @@ router.get("", (request, response) => {
         const orders = getAllOrdersUseCase.getAllOrders();
         response.status(201).json(orders);
     } catch (error: any) {
-        response.status(400).json({ error: error.message })
+        response.status(400).json({ error: error.message });
     }
-})
+});
 
 router.post("", (request, response) => {
     const customerId = request.body.customerId;
@@ -33,7 +33,7 @@ router.post("", (request, response) => {
     } catch (error: any) {
         response.status(400).json({ error: error.message })
     }
-})
+});
 
 
 router.get("/:orderId", (request, response) => {
@@ -47,7 +47,7 @@ router.get("/:orderId", (request, response) => {
     } catch (error: any) {
         response.status(400).json({ error: error.message });
     }
-})
+});
 
 router.patch("/:orderId/pay", (request, response) => {
     const orderId = parseInt(request.params.orderId);
@@ -60,7 +60,7 @@ router.patch("/:orderId/pay", (request, response) => {
     } catch (error: any) {
         response.status(400).json({ error: error.message });
     }
-})
+});
 
 router.patch("/:orderId/cancel", (request, response) => {
     const orderId = parseInt(request.params.orderId);
@@ -73,6 +73,6 @@ router.patch("/:orderId/cancel", (request, response) => {
     } catch (error: any) {
         response.status(400).json({ error: error.message });
     }
-})
+});
 
 export default router;

@@ -4,7 +4,7 @@ export default class OrderRepository {
     private orders: Order[] = [];
 
     create(order: Order): Order {
-        order.setId(this.orders.length)
+        order.setId(this.orders.length + 1)
         this.orders.push(order);
 
         return order;

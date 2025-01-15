@@ -9,16 +9,15 @@ const enum STATUS {
 export default class Order {
     private id: number;
 
-    private createdAt: Date;
-
     private total: number;
 
     private customer: number;
 
-    // private products: Product[];
     private products: [];
 
     private status: STATUS;
+
+    private createdAt: Date;
 
     private paidAt: Date;
 
@@ -46,15 +45,15 @@ export default class Order {
         }, 0);
     }
 
-    getId(): number {
+    public getId(): number {
         return this.id
     }
 
-    setId(id: number): void {
+    public setId(id: number): void {
         this.id = id
     }
 
-    pay(): void {
+    public pay(): void {
         if (this.products.length === 0) {
             throw new Error("Vous ne pouvez pas payer une commande sans produits dedans.")
         }
@@ -75,7 +74,7 @@ export default class Order {
         }
     }
 
-    cancel(): void {
+    public cancel(): void {
         if (this.status === STATUS.CANCELED) {
             throw new Error("Vous ne pouvez pas annuler une commande déjà annulée.")
         }

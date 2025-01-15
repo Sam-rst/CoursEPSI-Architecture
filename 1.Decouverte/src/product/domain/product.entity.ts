@@ -1,9 +1,11 @@
 export default class Product {
-    private id: string;
+    private id: number;
 
     private title: string;
 
     private price: number;
+
+    private createdAt: Date;
 
     constructor(title: string, price: number) {
         if (!title) {
@@ -14,29 +16,16 @@ export default class Product {
             throw new Error("price est négatif");
         }
 
+        this.createdAt = new Date();
         this.title = title;
         this.price = price;
     }
 
-    public get Title(): string {
-        return this.title;
+    public getId(): number {
+        return this.id;
     }
 
-    public set Title(value: string) {
-        if (!value) {
-            throw new Error("title est nécessaire");
-        }
-        this.title = value;
-    }
-
-    public get Price(): number {
-        return this.price;
-    }
-
-    public set Price(value: number) {
-        if (value < 0) {
-            throw new Error("price est négatif");
-        }
-        this.price = value;
+    public setId(id: number): void {
+        this.id = id;
     }
 }
