@@ -12,10 +12,10 @@ app.get('/', (request, response) => {
 });
 
 import ProductController from "./product/product.controller"
-app.use("/api/product", ProductController)
+app.use("/api/products", ProductController)
 
 import OrderController from "./order/presentation/order.controller"
-app.use("/api/order", OrderController)
+app.use("/api/orders", OrderController)
 
 app.listen(PORT, () => {
     console.log("App started");
