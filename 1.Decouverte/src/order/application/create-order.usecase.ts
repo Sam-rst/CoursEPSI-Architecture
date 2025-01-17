@@ -1,21 +1,19 @@
 import Product from "../../product/domain/product.entity";
-import ProductRepository from "../../product/infrastructure/product.repository";
-import { ProductContainer } from "../../product/product.container";
+import ProductRepository from "../../product/domain/product.repository.interface";
 import Order from "../domain/order.entity";
-import OrderRepository from "../infrastructure/order.repository";
-import { OrderContainer } from "../order.container";
+import OrderRepository from "../domain/order.repository.interface";
 
 export class CreateOrderUseCase {
 
     private orderRepository: OrderRepository;
     private productRepository: ProductRepository;
 
-    constructor() {
-        this.orderRepository = OrderContainer.getOrderRepository();
-        this.productRepository = ProductContainer.getProductRepository();
+    constructor(orderRepository: OrderRepository, productRepository: ProductRepository) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
-    public createOrder(customerId: number, listProductsId: number[]): Order | { error: string } {
+    public execute(customerId: number, listProductsId: number[]): Order | { error: string } {
         const products: Product[] = listProductsId.map(productId =>
             this.productRepository.findById(productId)
         );

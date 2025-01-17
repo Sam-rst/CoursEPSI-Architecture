@@ -1,13 +1,15 @@
-import OrderRepository from "./infrastructure/order.repository";
+import OrderRepository from "./domain/order.repository.interface";
+import OrderRepositoryInMemory from "./infrastructure/order.repository";
+
 
 export class OrderContainer {
-    private static orderRepository: OrderRepository;
+    private static orderRepositoryInMemory: OrderRepository;
 
-    public static getOrderRepository(): OrderRepository {
-        if (!OrderContainer.orderRepository) {
-            OrderContainer.orderRepository = new OrderRepository();
+    public static getOrderRepositoryInMemory(): OrderRepository {
+        if (!OrderContainer.orderRepositoryInMemory) {
+            OrderContainer.orderRepositoryInMemory = new OrderRepositoryInMemory();
         }
 
-        return OrderContainer.orderRepository;
+        return OrderContainer.orderRepositoryInMemory;
     }
 }

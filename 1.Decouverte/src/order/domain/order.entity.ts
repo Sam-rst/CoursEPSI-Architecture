@@ -88,4 +88,8 @@ export default class Order {
             throw new Error(error.message);
         }
     }
+
+    public getTotal() {
+        return this.total;
+    }
 }

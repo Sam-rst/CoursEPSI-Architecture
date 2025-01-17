@@ -3,18 +3,21 @@ import Order from "../domain/order.entity";
 import { CreateOrderUseCase } from "../application/create-order.usecase";
 import { PayOrderUseCase } from "../application/pay-order.usecase";
 import { GetOrderUseCase } from "../application/get-order.usecase";
-import { GetAllOrdersUseCase } from "../application/get-all-orders.usecase";
+import { GetOrdersUseCase } from "../application/get-orders.usecase";
 import { CancelOrderUseCase } from "../application/cancel-order.usecase";
+import { OrderContainer } from "../order.container";
+import { ProductContainer } from "../../product/product.container";
 
 
 const router = express.Router();
 
 router.get("", (request, response) => {
 
-    const getAllOrdersUseCase = new GetAllOrdersUseCase();
+    const productRepository = OrderContainer.getOrderRepositoryInMemory();
+    const getOrdersUseCase = new GetOrdersUseCase(productRepository);
 
     try {
-        const orders = getAllOrdersUseCase.getAllOrders();
+        const orders = getOrdersUseCase.execute();
         response.status(201).json(orders);
     } catch (error: any) {
         response.status(400).json({ error: error.message });
@@ -25,10 +28,12 @@ router.post("", (request, response) => {
     const customerId = request.body.customerId;
     const listProductsId = request.body.listProductsId;
 
-    const createOrderUseCase = new CreateOrderUseCase();
+    const productRepository = ProductContainer.getProductRepositoryInMemory();
+    const orderRepository = OrderContainer.getOrderRepositoryInMemory();
+    const createOrderUseCase = new CreateOrderUseCase(orderRepository, productRepository);
 
     try {
-        const order = createOrderUseCase.createOrder(customerId, listProductsId);
+        const order = createOrderUseCase.execute(customerId, listProductsId);
         response.status(201).json(order);
     } catch (error: any) {
         response.status(400).json({ error: error.message })
@@ -38,10 +43,11 @@ router.post("", (request, response) => {
 router.get("/:orderId", (request, response) => {
     const orderId = parseInt(request.params.orderId);
 
-    const getOrderUseCase = new GetOrderUseCase();
+    const orderRepository = OrderContainer.getOrderRepositoryInMemory();
+    const getOrderUseCase = new GetOrderUseCase(orderRepository);
 
     try {
-        const order = getOrderUseCase.getOrder(orderId);
+        const order = getOrderUseCase.execute(orderId);
         response.status(200).json(order);
     } catch (error: any) {
         response.status(400).json({ error: error.message });
@@ -51,10 +57,11 @@ router.get("/:orderId", (request, response) => {
 router.patch("/:orderId/pay", (request, response) => {
     const orderId = parseInt(request.params.orderId);
 
-    const payOrderUseCase = new PayOrderUseCase();
+    const orderRepository = OrderContainer.getOrderRepositoryInMemory();
+    const payOrderUseCase = new PayOrderUseCase(orderRepository);
 
     try {
-        const order = payOrderUseCase.payOrder(orderId);
+        const order = payOrderUseCase.execute(orderId);
         response.status(200).json(order);
     } catch (error: any) {
         response.status(400).json({ error: error.message });
@@ -64,10 +71,11 @@ router.patch("/:orderId/pay", (request, response) => {
 router.patch("/:orderId/cancel", (request, response) => {
     const orderId = parseInt(request.params.orderId);
 
-    const cancelOrderUseCase = new CancelOrderUseCase();
+    const orderRepository = OrderContainer.getOrderRepositoryInMemory();
+    const cancelOrderUseCase = new CancelOrderUseCase(orderRepository);
 
     try {
-        const order = cancelOrderUseCase.cancelOrder(orderId);
+        const order = cancelOrderUseCase.execute(orderId);
         response.status(200).json(order);
     } catch (error: any) {
         response.status(400).json({ error: error.message });

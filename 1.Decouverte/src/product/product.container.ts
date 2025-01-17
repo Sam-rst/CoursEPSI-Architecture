@@ -1,13 +1,13 @@
 import ProductRepository from "./infrastructure/product.repository";
 
 export class ProductContainer {
-    private static orderRepository: ProductRepository;
+    private static productRepositoryInMemory: ProductRepository;
 
-    public static getProductRepository(): ProductRepository {
-        if (!ProductContainer.orderRepository) {
-            ProductContainer.orderRepository = new ProductRepository();
+    public static getProductRepositoryInMemory(): ProductRepository {
+        if (!ProductContainer.productRepositoryInMemory) {
+            ProductContainer.productRepositoryInMemory = new ProductRepository();
         }
 
-        return ProductContainer.orderRepository;
+        return ProductContainer.productRepositoryInMemory;
     }
 }

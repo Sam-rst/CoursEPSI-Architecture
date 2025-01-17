@@ -1,15 +1,14 @@
 import Order from "../domain/order.entity";
-import OrderRepository from "../infrastructure/order.repository";
-import { OrderContainer } from "../order.container";
+import OrderRepository from "../domain/order.repository.interface";
 
 export class CancelOrderUseCase {
     private orderRepository: OrderRepository;
 
-    constructor() {
-        this.orderRepository = OrderContainer.getOrderRepository();
+    constructor(orderRepository: OrderRepository) {
+        this.orderRepository = orderRepository;
     }
 
-    public cancelOrder(orderId: number): Order | { error: string } {
+    public execute(orderId: number): Order | { error: string } {
         const order = this.orderRepository.findById(orderId);
 
         if (!order) {

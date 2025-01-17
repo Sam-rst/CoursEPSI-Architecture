@@ -1,16 +1,15 @@
 import Product from "../domain/product.entity";
 import ProductRepository from "../infrastructure/product.repository";
-import { ProductContainer } from "../product.container";
 
 export class GetAllProductsUseCase {
 
     private productRepository: ProductRepository;
 
-    constructor() {
-        this.productRepository = ProductContainer.getProductRepository();
+    constructor(productRepository: ProductRepository) {
+        this.productRepository = productRepository;
     }
 
-    public getAllProducts(): Product[] | { error: string } {
+    public execute(): Product[] | { error: string } {
         const products = this.productRepository.findAll();
 
         try {

@@ -1,6 +1,7 @@
 import Order from "../domain/order.entity";
+import OrderRepository from "../domain/order.repository.interface";
 
-export default class OrderRepository {
+export default class OrderRepositoryInMemory implements OrderRepository {
     private orders: Order[] = [];
 
     create(order: Order): Order {
@@ -19,7 +20,7 @@ export default class OrderRepository {
 
     }
 
-    update(order: Order) {
+    update(order: Order): Order {
         this.orders = this.orders.map((orderInList) => {
             if (orderInList.getId() === order.getId()) {
                 return order;
@@ -27,5 +28,6 @@ export default class OrderRepository {
 
             return orderInList;
         })
+        return
     }
 }

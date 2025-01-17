@@ -3,18 +3,23 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/index.ts"
+    "test": "jest --watchAll",
+    "start": "nodemon ./src/index.ts",
+    "restart": "npx kill-port 3010 && npm run start"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "express": "^4.21.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14"
   }
 }

@@ -1,7 +1,7 @@
 import Order from "../domain/order.entity";
 import OrderRepository from "../domain/order.repository.interface";
 
-export class GetOrderUseCase {
+export class GetOrdersUseCase {
 
     private orderRepository: OrderRepository;
 
@@ -9,15 +9,11 @@ export class GetOrderUseCase {
         this.orderRepository = orderRepository;
     }
 
-    public execute(orderId: number): Order | { error: string } {
-        const order = this.orderRepository.findById(orderId);
-
-        if (!order) {
-            throw new Error("Commande non trouvée");
-        }
+    public execute(): Order[] | { error: string } {
+        const orders = this.orderRepository.findAll();
 
         try {
-            return order;
+            return orders;
         } catch (error: any) {
             return { error: error.message };
         }
