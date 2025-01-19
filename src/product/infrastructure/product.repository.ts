@@ -29,4 +29,8 @@ export default class ProductRepositoryInMemory implements ProductRepository {
         })
         return
     }
+
+    delete(product: Product): void {
+        product.delete();
+    }
 }

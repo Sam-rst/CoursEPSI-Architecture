@@ -1,8 +1,7 @@
-import Product from "../../../product/domain/product.entity";
 import ProductRepository from "../../../product/domain/product.repository.interface";
 import Order from "../../domain/order.entity";
 import OrderRepository from "../../domain/order.repository.interface";
-import { CreateOrderUseCase } from "../create-order.usecase"
+import { AddProductToOrderUseCase } from "../add-product.usecase"
 
 describe("En tant qu'utilisateur, je souhaite créer une commande", () => {
     it("Quand j'envoie un identifiant client et une liste d'ids de produits, alors une commande est créée", () => {
@@ -25,9 +24,9 @@ describe("En tant qu'utilisateur, je souhaite créer une commande", () => {
             }
         } as unknown as ProductRepository;
 
-        const createOrderUseCase = new CreateOrderUseCase(orderRepositoryFake, productRepositoryFake);
+        const addProductToOrderUseCase = new AddProductToOrderUseCase(orderRepositoryFake, productRepositoryFake);
 
-        expect(createOrderUseCase.execute(1, [1, 1]).getTotal()).toBe(20);
+        expect(addProductToOrderUseCase.execute(1, [1, 1]).getTotal()).toBe(20);
 
     })
 
@@ -51,13 +50,13 @@ describe("En tant qu'utilisateur, je souhaite créer une commande", () => {
             }
         } as unknown as ProductRepository;
 
-        const createOrderUseCase = new CreateOrderUseCase(orderRepositoryFake, productRepositoryFake);
+        const addProductToOrderUseCase = new AddProductToOrderUseCase(orderRepositoryFake, productRepositoryFake);
 
-        expect(() => createOrderUseCase.execute(1, [])).toThrow("Une commande demande au minimum 1 produit pour être acceptée.");
+        expect(() => addProductToOrderUseCase.execute(1, [])).toThrow("Une commande demande au minimum 1 produit pour être acceptée.");
 
     })
 
-    it("Quand j'envoie un identifiant client et une liste d'ids de produits supérieur à 2 produits, alors une commande est n'est pas créée et renvoie bien une erreur", () => {
+    it("Quand j'envoie un identifiant client et une liste d'ids de produits supérieur à la limite de produits par commande, alors une commande est n'est pas créée et renvoie bien une erreur", () => {
         const orderRepositoryFake = {
             create: (order: Order) => {
                 return order;
@@ -77,9 +76,9 @@ describe("En tant qu'utilisateur, je souhaite créer une commande", () => {
             }
         } as unknown as ProductRepository;
 
-        const createOrderUseCase = new CreateOrderUseCase(orderRepositoryFake, productRepositoryFake);
+        const addProductToOrderUseCase = new AddProductToOrderUseCase(orderRepositoryFake, productRepositoryFake);
 
-        expect(() => createOrderUseCase.execute(1, [1, 1, 1])).toThrow("Une commande ne peut avoir que 2 produits au maximum.");
+        expect(() => addProductToOrderUseCase.execute(1, [1, 1, 1, 1, 1])).toThrow("Une commande ne peut avoir que 4 produits au maximum.");
 
     })
 })

@@ -9,13 +9,13 @@ export class PayOrderUseCase {
     }
 
     public execute(orderId: number): Order | { error: string } {
-        const order = this.orderRepository.findById(orderId);
-
-        if (!order) {
-            throw new Error("Commande non trouvée");
-        }
-
         try {
+            const order = this.orderRepository.findById(orderId);
+
+            if (!order) {
+                throw new Error("Commande non trouvée");
+            }
+
             order.pay();
             this.orderRepository.update(order);
             return order;

@@ -9,10 +9,10 @@ export class CreateProductUseCase {
         this.productRepository = productRepository;
     }
 
-    public execute(title: string, price: number): Product | { error: string } {
-        const productCreated = new Product(title, price);
-
+    public execute(title: string, price: number, description: string): Product | { error: string } {
         try {
+            const productCreated = new Product(title, price, description);
+
             const productPersisted = this.productRepository.create(productCreated);
             return productPersisted;
         } catch (error: any) {

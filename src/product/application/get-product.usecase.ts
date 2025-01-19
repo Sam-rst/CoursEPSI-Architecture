@@ -10,13 +10,13 @@ export class GetProductUseCase {
     }
 
     public execute(productId: number): Product | { error: string } {
-        const product = this.productRepository.findById(productId);
-
-        if (!product) {
-            throw new Error("Produit non trouvée");
-        }
-
         try {
+            const product = this.productRepository.findById(productId);
+
+            if (!product) {
+                throw new Error("Produit non trouvée");
+            }
+
             return product;
         } catch (error: any) {
             return { error: error.message };

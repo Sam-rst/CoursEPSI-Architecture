@@ -17,7 +17,10 @@ export default class OrderRepositoryInMemory implements OrderRepository {
 
     findById(id: number): Order | undefined {
         return this.orders.find((order) => order.getId() === id);
+    }
 
+    findAllByCustomerId(customerId: number): Order[] {
+        return this.orders.filter((order) => order.getCustomerId() === customerId);
     }
 
     update(order: Order): Order {
@@ -29,5 +32,13 @@ export default class OrderRepositoryInMemory implements OrderRepository {
             return orderInList;
         })
         return
+    }
+
+    findCartByCustomerId(customerId: number): Order | undefined {
+        return this.orders.find((order) => order.getCustomerId() === customerId && order.isCreated() === false);
+    }
+
+    existsByProductId(productId: number): boolean {
+        return this.orders.some((order) => order.getProducts().some((product) => product.getId() === productId));
     }
 }

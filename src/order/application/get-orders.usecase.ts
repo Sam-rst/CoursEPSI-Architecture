@@ -10,9 +10,9 @@ export class GetOrdersUseCase {
     }
 
     public execute(): Order[] | { error: string } {
-        const orders = this.orderRepository.findAll();
-
         try {
+            const orders = this.orderRepository.findAll();
+
             return orders;
         } catch (error: any) {
             return { error: error.message };

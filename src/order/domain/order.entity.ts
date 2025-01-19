@@ -4,6 +4,7 @@ const enum STATUS {
     CREATED = "CREATED",
     PAID = "PAID",
     CANCELED = "CANCELED",
+    SHIPPED = "SHIPPED",
 }
 
 export default class Order {
@@ -15,6 +16,8 @@ export default class Order {
 
     private products: Product[];
 
+    private maxProducts: number = 4;
+
     private status: STATUS;
 
     private createdAt: Date;
@@ -23,34 +26,66 @@ export default class Order {
 
     private canceledAt: Date;
 
+    private shippedAt: Date;
+
     constructor(customerId: number, products: Product[]) {
-        if (!customerId || !products) {
-            throw new Error("Les paramètres ne sont pas valides pour créer une commande.");
-        }
-
-        if (products.length == 0) {
-            throw new Error("Une commande demande au minimum 1 produit pour être acceptée.");
-        }
-
-        if (products.length > 2) {
-            throw new Error("Une commande ne peut avoir que 2 produits au maximum.");
-        }
         this.createdAt = new Date();
         this.customer = customerId;
         this.products = products;
         this.status = STATUS.CREATED;
+        this.setProducts(products);
 
-        this.total = products.reduce((acc, product) => {
+        this.calculateTotal();
+    }
+
+    public getId(): number {
+        return this.id;
+    }
+
+    public setId(id: number): void {
+        this.id = id;
+    }
+
+    private setProducts(products: Product[]): void {
+        if (products.length == 0) {
+            throw new Error("Une commande demande au minimum 1 produit pour être acceptée.");
+        }
+
+        if (products.length > this.maxProducts) {
+            throw new Error(`Une commande ne peut avoir que ${this.maxProducts} produits au maximum.`);
+        }
+        this.products = products;
+    }
+
+    public getCustomerId(): number {
+        return this.customer;
+    }
+
+    public getTotal() {
+        return this.total;
+    }
+
+    public isCreated(): boolean {
+        return this.status === STATUS.CREATED;
+    }
+
+    private calculateTotal(): void {
+        this.total = this.products.reduce((acc, product) => {
             return acc + product.getPrice();
         }, 0);
     }
 
-    public getId(): number {
-        return this.id
+    public getProducts(): Product[] {
+        return this.products;
     }
 
-    public setId(id: number): void {
-        this.id = id
+    public addProducts(products: Product[]): void {
+        if ((products.length + this.products.length) > this.maxProducts) {
+            throw new Error(`Une commande ne peut avoir que ${this.maxProducts} produits au maximum.`);
+        }
+
+        this.products = [...this.products, ...products];
+        this.calculateTotal();
     }
 
     public pay(): void {
@@ -79,17 +114,32 @@ export default class Order {
             throw new Error("Vous ne pouvez pas annuler une commande déjà annulée.")
         }
 
+        if (this.status !== STATUS.PAID) {
+            throw new Error("Vous ne pouvez pas annuler une commande qui n'est pas payée.")
+        }
+
         try {
-            if (this.status === STATUS.PAID) {
-                this.status = STATUS.CANCELED;
-                this.canceledAt = new Date();
-            }
+            this.status = STATUS.CANCELED;
+            this.canceledAt = new Date();
         } catch (error: any) {
             throw new Error(error.message);
         }
     }
 
-    public getTotal() {
-        return this.total;
+    public ship(): void {
+        if (this.status === STATUS.SHIPPED) {
+            throw new Error("Vous ne pouvez pas expedier une commande déjà expédiée.")
+        }
+
+        if (this.status !== STATUS.PAID) {
+            throw new Error("Vous ne pouvez pas expedier une commande qui n'est pas payée.")
+        }
+
+        try {
+            this.status = STATUS.SHIPPED;
+            this.shippedAt = new Date();
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
     }
 }

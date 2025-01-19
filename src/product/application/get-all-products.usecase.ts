@@ -10,9 +10,9 @@ export class GetAllProductsUseCase {
     }
 
     public execute(): Product[] | { error: string } {
-        const products = this.productRepository.findAll();
-
         try {
+            const products = this.productRepository.findAll();
+
             return products;
         } catch (error: any) {
             return { error: error.message };
